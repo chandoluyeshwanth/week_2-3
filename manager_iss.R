@@ -63,3 +63,6 @@ names(managers)[12] <- "Mean"
 
 managers$Date <- as.Date(managers$Date, "%Y-%d-%m")
 str(managers)
+
+
+

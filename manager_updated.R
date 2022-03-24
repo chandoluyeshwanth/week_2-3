@@ -132,3 +132,32 @@ install.packages("VIM")
 library(VIM)
 missing_value <- aggr(managers_data, prop = TRUE,numbers = FALSE)
 summary(missing_value)
+
+# Pra merging data 
+# Loading data
+
+new_manager_data <- read.csv("MoreData.csv", na = "")
+
+# Structure of loaded data
+
+str(new_manager_data)
+
+# Exporting data of interest 
+
+new_manager_data_cleaned <- subset(new_manager_data, select = c(Age,Country,Date,Gender,Q1,Q2,Q3,Q4,Q5))
+
+# Creating Agecat
+new_manager_data_cleaned$AgeCat[new_manager_data_cleaned$Age >= 45] <- "Elder"
+new_manager_data_cleaned$AgeCat[new_manager_data_cleaned$Age >= 26 & new_manager_data_cleaned$Age <= 44] <- "Middle Aged"
+new_manager_data_cleaned$AgeCat[new_manager_data_cleaned$Age <= 25] <- "Young"
+new_manager_data_cleaned$AgeCat[is.na(new_manager_data_cleaned$Age)] <- "Elder"
+AgeCat <- factor(new_manager_data_cleaned$AgeCat, order = TRUE, levels = c("Young", "Middle Aged", "Elder"))
+new_manager_data_cleaned$AgeCat <- AgeCat
+
+#creating x column
+
+new_manager_data_cleaned$X <- NA
+# Merging cleaned to manager data
+#final_manager_data <- merge.data.frame(new_manager_data_cleaned, managers_data, all.x = FALSE,)
+
+final_manager_data <- rbind(new_manager_data_cleaned,managers_data)
